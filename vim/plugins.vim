@@ -15,6 +15,7 @@ Plugin 'vim-airline/vim-airline'
 
 Plugin 'w0rp/ale'
 Plugin 'tpope/vim-fugitive'
+Plugin 'editorconfig/editorconfig-vim'
 
 call vundle#end()
 
