@@ -1,0 +1,57 @@
+source ~/.vim/plugins.vim
+
+syntax on
+
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set smarttab
+set autoindent
+set smartindent
+
+set colorcolumn=81,121
+
+set number
+colorscheme Tomorrow-Night
+
+set nobackup
+set nowritebackup
+set noswapfile
+
+set backspace=indent,eol,start
+set mouse=a
+
+set updatetime=100
+
+" :nnoremap <Leader>w <C-w>
+
+" let g:xcode_path=substitute(system('xcode-select -p'), '\n$', '', '''')
+" let s:clang_library_path=g:xcode_path . '/Toolchains/XcodeDefault.xctoolchain/usr/lib'
+
+" if isdirectory(s:clang_library_path)
+"     let g:clang_library_path=s:clang_library_path
+" endif
+
+" Syntastic recommended settings
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" Airline Configuration
+let g:airline_theme='tomorrow'
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+
+
+" let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+" execute "set rtp+=" . g:opamshare . "/merlin/vim"
+
+" let g:syntastic_ocaml_checkers = ['merlin']
+
+" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" map <C-_> :NERDTreeToggle<CR>
