@@ -1,24 +1,26 @@
 set nocompatible
-filetype off
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+call plug#begin('~/.vim/packages/')
 
-Plugin 'VundleVim/Vundle.vim'
+Plug 'VundleVim/Vundle.vim'
 
-Plugin 'flazz/vim-colorschemes'
-Plugin 'vim-airline/vim-airline-themes'
+Plug 'flazz/vim-colorschemes'
+Plug 'chriskempson/base16-vim'
+Plug 'vim-airline/vim-airline-themes'
 
-Plugin 'scrooloose/nerdtree'
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'vim-airline/vim-airline'
+Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'airblade/vim-gitgutter'
+Plug 'vim-airline/vim-airline'
 
-Plugin 'w0rp/ale'
-Plugin 'tpope/vim-fugitive'
-Plugin 'editorconfig/editorconfig-vim'
+Plug 'w0rp/ale'
+Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
+Plug 'tpope/vim-fugitive'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'tpope/vim-commentary'
+Plug 'sheerun/vim-polyglot'
 
-call vundle#end()
+Plug 'junegunn/goyo.vim'
 
-filetype plugin indent on
-
+call plug#end()

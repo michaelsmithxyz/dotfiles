@@ -3,8 +3,8 @@
 vim:
 	@mkdir -p ~/.vim/bundle
 	@cp vim/* ~/.vim/
-	git clone https://github.com/VundleVim/Vundle.vim ~/.vim/bundle/Vundle.vim
-	vim -u ~/.vim/plugins.vim +PluginInstall +qall
+	curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	vim -u ~/.vim/plugins.vim +PlugInstall +qall
 	
 clean:
 	@rm -rf ~/.vim
