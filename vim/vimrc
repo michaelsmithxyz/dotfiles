@@ -12,6 +12,7 @@ set smartindent
 set colorcolumn=81,121
 
 set number
+set termguicolors
 colorscheme Tomorrow-Night
 
 set nobackup
