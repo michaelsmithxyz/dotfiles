@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+chEnv="local"
+command="client"
+iterations=15
+
+while getopts "psh:bi:" flag; do
+  case "$flag" in
+    (p)
+      chEnv="prod"
+      ;;
+    (s)
+      chEnv="staging"
+      ;;
+    (h)
+      chShardSuffix="-${OPTARG}"
+      ;;
+    (b)
+      command="benchmark"
+      ;;
+    (i)
+      iterations="${OPTARG}"
+      ;;
+  esac
+done
+
+chHost="localhost"
+chPort=9002
+chUser="default"
+chPassword=""
+chSecure=false
+
+case "${chEnv}" in
+  (staging)
+    chHost="logrocket-stage${chShardSuffix}.logrocket.altinity.cloud"
+    chPort=9440
+    chUser=$(op read "op://Private/ClickHouse/username")
+    chPassword=$(op read "op://Private/ClickHouse/staging password")
+    chSecure=true
+    ;;
+  (prod)
+    chHost="logrocket-prod${chShardSuffix}.logrocket.altinity.cloud"
+    chPort=9440
+    chUser=$(op read "op://Private/ClickHouse/username")
+    chPassword=$(op read "op://Private/ClickHouse/prod password")
+    chSecure=true
+    ;;
+esac
+
+args=(
+  "${command}"
+  '-h'
+  "${chHost}"
+  '--port'
+  "${chPort}"
+  '-u'
+  "${chUser}"
+)
+if [ -n "${chPassword}" ]; then
+  args+=(
+    '--password'
+    "${chPassword}"
+  )
+fi
+if [ "${chSecure}" = true ]; then
+  args+=('-s')
+fi
+if [ "${command}" = "benchmark" ]; then
+  args+=(
+    '-i'
+    "${iterations}"
+    '-d'
+    0
+  )
+fi
+
+clickhouse "${args[@]}" <&0
