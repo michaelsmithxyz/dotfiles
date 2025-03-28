@@ -1,4 +1,0 @@
-#!/bin/zsh
-
-cd ~/Code/logrocket
-tmux -CC
