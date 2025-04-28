@@ -156,14 +156,15 @@ return {
         end
       })
 
-      if vim.g.have_nerd_font then
-        local signs = { ERROR = '', WARN = '', INFO = '', HINT = '' }
-        local diagnostic_signs = {}
-        for type, icon in pairs(signs) do
-          diagnostic_signs[vim.diagnostic.severity[type]] = icon
-        end
-        vim.diagnostic.config { signs = { text = diagnostic_signs } }
+      local signs = { ERROR = '', WARN = '', INFO = '', HINT = '' }
+      local diagnostic_signs = {}
+      for type, icon in pairs(signs) do
+        diagnostic_signs[vim.diagnostic.severity[type]] = icon
       end
+      vim.diagnostic.config {
+        virtual_text = true,
+        signs = { text = diagnostic_signs, virtual_text = true },
+      }
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       -- Needed for UFO folding
@@ -200,6 +201,7 @@ return {
             },
           },
         },
+        clangd = {},
       }
 
       local ensure_installed = vim.tbl_keys(servers or {})
@@ -329,5 +331,34 @@ return {
     'nvim-treesitter/nvim-treesitter-context',
     opts = {
     },
+  },
+  {
+    "olimorris/codecompanion.nvim",
+    opts = {},
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    config = function ()
+      require("codecompanion").setup({
+        strategies = {
+          chat = {
+            adapter = "gemini",
+          },
+          inline = {
+            adapter = "gemini",
+          },
+        },
+        adapters = {
+          gemini = function ()
+            return require('codecompanion.adapters').extend("gemini", {
+              env = {
+                api_key = "cmd:echo $GEMINI_API_KEY"
+              }
+            })
+          end,
+        },
+      })
+    end
   },
 }
