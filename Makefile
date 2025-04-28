@@ -12,6 +12,11 @@ tmux:
 nvim:
 	@mkdir -p ~/.config/
 	@ln -s $(realpath nvim/) ~/.config/nvim
+
+.PHONY: ghostty
+ghostty:
+	@mkdir -p ~/.config/
+	@ln -s $(realpath ghostty/) ~/.config/ghostty
 	
 .PHONY: clean
 clean:
