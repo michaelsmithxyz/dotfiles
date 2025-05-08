@@ -37,6 +37,8 @@ vim.keymap.set("n", "<leader>n", ":bnext<cr>", { desc = "Next buffer" })
 vim.keymap.set("n", "<leader>p", ":bprevious<cr>", { desc = "Previous buffer" })
 vim.keymap.set("n", "<leader>d", ":bdelete<cr>", { desc = "Close buffer" })
 
+require("config.local").load()
+
 require("config.lazy")
 require("lazy").setup({
   spec = {

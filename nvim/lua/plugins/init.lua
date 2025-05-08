@@ -51,6 +51,7 @@ return {
       vim.keymap.set('n', '<leader>f', builtin.find_files, { desc = 'Find files' })
       vim.keymap.set('n', '<leader>F', builtin.live_grep, { desc = 'Live grep' })
       vim.keymap.set('n', '<leader>b', builtin.buffers, { desc = 'Buffers' })
+      vim.keymap.set('n', '<leader>B', builtin.current_buffer_fuzzy_find, { desc = 'Current buffer'})
     end
   },
   {
@@ -139,19 +140,25 @@ return {
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
 
-          map('<leader>gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-          map('<leader>gt', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype Definition')
+          local builtin = require('telescope.builtin')
 
-          map('<leader>sr', function() require('telescope.builtin').lsp_references({ show_line = false }) end, '[S]how [R]eferences')
-          map('<leader>ss', require('telescope.builtin').lsp_document_symbols, '[S]how Document [S]ymbols')
-          map('<leader>sS', require('telescope.builtin').lsp_workspace_symbols, '[S]how Workspace [S]ymbols')
-          map('<leader>sd', function() require('telescope.builtin').diagnostics({bufnr=0}) end, '[S]how [D]iagnostics')
+          map('<leader>gd', builtin.lsp_definitions, '[G]oto [D]efinition')
+          map('<leader>gt', builtin.lsp_type_definitions, '[G]oto [T]ype Definition')
+
+          map('<leader>sr', function() builtin.lsp_references({ show_line = false }) end, '[S]how [R]eferences')
+          map('<leader>ss', builtin.lsp_document_symbols, '[S]how Document [S]ymbols')
+          map('<leader>sS', builtin.lsp_workspace_symbols, '[S]how Workspace [S]ymbols')
+          map('<leader>sd', function() builtin.diagnostics({bufnr=0}) end, '[S]how [D]iagnostics')
+          map('<leader>sa', vim.lsp.buf.code_action, '[S]how Code [A]ctions')
+          map('<leader>si', builtin.lsp_implementations, '[S]how [I]mplementations')
 
           local client = vim.lsp.get_client_by_id(event.data.client_id)
           if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
-            map('<leader>th', function()
-              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
-            end, '[T]oggle Inlay [H]ints')
+            map(
+              '<leader>th',
+              function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf }) end,
+              '[T]oggle Inlay [H]ints'
+            )
           end
         end
       })
@@ -183,7 +190,19 @@ return {
           },
         },
         ts_ls = {
-          root_dir = require('lspconfig').util.root_pattern('tsconfig.json', "package.json", '.git')
+          root_dir = require('lspconfig').util.root_pattern('tsconfig.json', "package.json", '.git'),
+          init_options = {
+            preferences = {
+              includeInlayParameterNameHints = 'none',
+              includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+              includeInlayFunctionParameterTypeHints = true,
+              includeInlayVariableTypeHints = true,
+              includeInlayPropertyDeclarationTypeHints = true,
+              includeInlayFunctionLikeReturnTypeHints = true,
+              includeInlayEnumMemberValueHints = true,
+              importModuleSpecifierPreference = 'non-relative',
+            },
+          },
         },
         denols = {
           root_dir = require('lspconfig').util.root_pattern("deno.json")
@@ -202,6 +221,7 @@ return {
           },
         },
         clangd = {},
+        omnisharp = {},
       }
 
       local ensure_installed = vim.tbl_keys(servers or {})
@@ -340,25 +360,76 @@ return {
       "nvim-treesitter/nvim-treesitter",
     },
     config = function ()
+      local local_config = require('config.local').settings.codecompanion;
+      if not local_config then
+        return
+      end
+
       require("codecompanion").setup({
+        display =  {
+          chat = {
+            show_settings = true,
+          },
+        },
         strategies = {
           chat = {
-            adapter = "gemini",
+            adapter = local_config.defaults.adapter,
           },
           inline = {
-            adapter = "gemini",
+            adapter = local_config.defaults.adapter,
           },
         },
-        adapters = {
-          gemini = function ()
-            return require('codecompanion.adapters').extend("gemini", {
-              env = {
-                api_key = "cmd:echo $GEMINI_API_KEY"
-              }
-            })
-          end,
-        },
+        adapters = local_config.adapters,
       })
+
+      local adapters = {}
+      for key, _ in pairs(local_config.adapters) do
+        table.insert(adapters, key)
+      end
+
+      local t_pickers = require('telescope.pickers')
+      local t_finders = require('telescope.finders')
+      local t_config = require('telescope.config').values
+      local t_actions = require('telescope.actions')
+      local t_actions_state = require('telescope.actions.state')
+
+      local adapter_picker = function (callback)
+        t_pickers.new({}, {
+          prompt_title = "Select adapter",
+          finder = t_finders.new_table({
+            results = adapters,
+          }),
+          sorter = t_config.generic_sorter({}),
+          attach_mappings = function (prompt_bufno)
+            t_actions.select_default:replace(
+              function ()
+                t_actions.close(prompt_bufno)
+                callback(t_actions_state.get_selected_entry()[1])
+              end
+            )
+            return true
+          end
+        }):find()
+      end
+
+      vim.keymap.set(
+        {"n", "v"},
+        "<leader>c",
+        "<cmd>CodeCompanionChat Toggle<cr>",
+        { noremap = true, silent = true, desc = "Toggle chat" }
+      )
+      vim.keymap.set(
+        {"n", "v"},
+        "<leader>C",
+        function ()
+          adapter_picker(
+            function (adapter)
+              vim.cmd(string.format('CodeCompanionChat %s', adapter))
+            end
+          )
+        end,
+        { noremap = true, silent = true, desc = "Open chat with adapter" }
+      )
     end
   },
 }
