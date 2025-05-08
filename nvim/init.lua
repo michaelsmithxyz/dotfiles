@@ -36,6 +36,7 @@ vim.keymap.set("i", "<S-Tab>", "<C-d>")
 vim.keymap.set("n", "<leader>n", ":bnext<cr>", { desc = "Next buffer" })
 vim.keymap.set("n", "<leader>p", ":bprevious<cr>", { desc = "Previous buffer" })
 vim.keymap.set("n", "<leader>d", ":bdelete<cr>", { desc = "Close buffer" })
+vim.keymap.set({ "n", "v" }, "<leader>/", "gcc", { remap = true, desc = "Toggle comment" })
 
 require("config.local").load()
 
