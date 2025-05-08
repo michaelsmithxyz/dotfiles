@@ -167,72 +167,22 @@ return {
       for type, icon in pairs(signs) do
         diagnostic_signs[vim.diagnostic.severity[type]] = icon
       end
-      vim.diagnostic.config {
+      vim.diagnostic.config({
         virtual_text = true,
         signs = { text = diagnostic_signs, virtual_text = true },
-      }
-
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      -- Needed for UFO folding
-      capabilities.textDocument.foldingRange = {
-        dynamicRegistration = false,
-        lineFoldingOnly = true
-      }
-      capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
-
-      local servers = {
-        eslint = {
-          settings = {
-          -- helps eslint find the eslintrc when it's placed in a subfolder instead of the cwd root
-            workingDirectories = { mode = "auto" },
-            format = 'auto_format',
-          },
-        },
-        ts_ls = {
-          root_markers = { "tsconfig.json", "package.json" },
-          init_options = {
-            preferences = {
-              includeInlayParameterNameHints = 'none',
-              includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-              includeInlayFunctionParameterTypeHints = true,
-              includeInlayVariableTypeHints = true,
-              includeInlayPropertyDeclarationTypeHints = true,
-              includeInlayFunctionLikeReturnTypeHints = true,
-              includeInlayEnumMemberValueHints = true,
-              importModuleSpecifierPreference = 'non-relative',
-            },
-          },
-        },
-        denols = {
-          root_markers = { "deno.json", "deno.jsonc" },
-        },
-        lua_ls = {
-          settings = {
-            Lua = {
-              diagnostics = {
-                globals = { "vim", "use" },
-              },
-              workspace = {
-                library = vim.api.nvim_get_runtime_file("", true),
-                checkThirdParty = false,
-              }
-            },
-          },
-        },
-        clangd = {},
-        omnisharp = {},
-      }
-
-      for server, server_config in pairs(servers) do
-        vim.lsp.config(server, server_config)
-      end
+      })
 
       require("mason").setup()
-
-      local ensure_installed = vim.tbl_keys(servers or {})
       require("mason-lspconfig").setup({
         automatic_enable = true,
-        ensure_installed = ensure_installed
+        ensure_installed = {
+          "eslint",
+          "ts_ls",
+          "denols",
+          "lua_ls",
+          "omnisharp",
+          "clangd",
+        }
       })
     end,
   },
@@ -277,7 +227,10 @@ return {
   },
   {
     'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons', 'nvim-lua/lsp-status.nvim' },
+    dependencies = {
+      'nvim-tree/nvim-web-devicons',
+      'nvim-lua/lsp-status.nvim'
+    },
     lazy = false,
     opts = {
       options = {
@@ -428,4 +381,10 @@ return {
       )
     end
   },
+  {
+    'stevearc/oil.nvim',
+    opts = {},
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    lazy = false,
+  }
 }
