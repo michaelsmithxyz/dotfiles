@@ -129,7 +129,6 @@ return {
     dependencies = {
       { 'williamboman/mason.nvim', opts = {} },
       'williamboman/mason-lspconfig.nvim',
-      'WhoIsSethDaniel/mason-tool-installer.nvim',
     },
     config = function ()
       vim.api.nvim_create_autocmd('LspAttach', {
@@ -190,7 +189,7 @@ return {
           },
         },
         ts_ls = {
-          root_dir = require('lspconfig').util.root_pattern('tsconfig.json', "package.json", '.git'),
+          root_markers = { "tsconfig.json", "package.json" },
           init_options = {
             preferences = {
               includeInlayParameterNameHints = 'none',
@@ -205,7 +204,7 @@ return {
           },
         },
         denols = {
-          root_dir = require('lspconfig').util.root_pattern("deno.json")
+          root_markers = { "deno.json", "deno.jsonc" },
         },
         lua_ls = {
           settings = {
@@ -216,7 +215,7 @@ return {
               workspace = {
                 library = vim.api.nvim_get_runtime_file("", true),
                 checkThirdParty = false,
-              },
+              }
             },
           },
         },
@@ -224,19 +223,16 @@ return {
         omnisharp = {},
       }
 
-      local ensure_installed = vim.tbl_keys(servers or {})
-      require('mason-tool-installer').setup { ensure_installed = ensure_installed }
+      for server, server_config in pairs(servers) do
+        vim.lsp.config(server, server_config)
+      end
 
-      require('mason-lspconfig').setup({
-        ensure_installed = vim.tbl_keys(servers),
-        automatic_installation = true,
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
-          end,
-        },
+      require("mason").setup()
+
+      local ensure_installed = vim.tbl_keys(servers or {})
+      require("mason-lspconfig").setup({
+        automatic_enable = true,
+        ensure_installed = ensure_installed
       })
     end,
   },
