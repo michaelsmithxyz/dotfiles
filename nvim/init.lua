@@ -9,7 +9,7 @@ vim.opt.signcolumn = 'yes'
 
 vim.opt.mouse = 'a'
 
-vim.api.nvim_set_option("clipboard","unnamedplus")
+vim.api.nvim_set_option('clipboard', 'unnamedplus')
 
 vim.opt.showmode = false
 
@@ -32,18 +32,18 @@ vim.opt.cursorline = true
 -- Minimum number of lines to display around the cursor
 vim.opt.scrolloff = 10
 
-vim.keymap.set("i", "<S-Tab>", "<C-d>")
-vim.keymap.set("n", "<leader>n", ":bnext<cr>", { desc = "Next buffer" })
-vim.keymap.set("n", "<leader>p", ":bprevious<cr>", { desc = "Previous buffer" })
-vim.keymap.set("n", "<leader>d", ":bdelete<cr>", { desc = "Close buffer" })
-vim.keymap.set({ "n", "v" }, "<leader>/", "gcc", { remap = true, desc = "Toggle comment" })
+vim.keymap.set('i', '<S-Tab>', '<C-d>')
+vim.keymap.set('n', '<leader>n', ':bnext<cr>', { desc = 'Next buffer' })
+vim.keymap.set('n', '<leader>p', ':bprevious<cr>', { desc = 'Previous buffer' })
+vim.keymap.set('n', '<leader>d', ':bdelete<cr>', { desc = 'Close buffer' })
+vim.keymap.set({ 'n', 'v' }, '<leader>/', 'gcc', { remap = true, desc = 'Toggle comment' })
 
-require("config.local").load()
+require('config.local').load()
 
-require("config.lazy")
-require("lazy").setup({
+require('config.lazy')
+require('lazy').setup({
   spec = {
-    { import = "plugins" },
+    { import = 'plugins' },
   },
   -- automatically check for plugin updates
   checker = { enabled = true },

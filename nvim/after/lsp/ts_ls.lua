@@ -1,5 +1,5 @@
 return {
-  root_markers = { "tsconfig.json", "package.json" },
+  root_markers = { 'tsconfig.json', 'package.json' },
   init_options = {
     preferences = {
       includeInlayParameterNameHints = 'none',
