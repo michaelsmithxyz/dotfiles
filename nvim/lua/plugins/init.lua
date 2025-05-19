@@ -185,6 +185,8 @@ return {
           'lua_ls',
           'omnisharp',
           'clangd',
+          'gopls',
+          'pyright',
         },
       })
     end,
@@ -392,5 +394,12 @@ return {
     opts = {},
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     lazy = false,
+  },
+  {
+    'ggandor/leap.nvim',
+    opts = {},
+    config = function()
+      require('leap').set_default_mappings()
+    end,
   },
 }
