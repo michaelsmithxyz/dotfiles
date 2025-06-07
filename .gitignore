@@ -1,2 +1,3 @@
 nvim/lazy-lock.json
 nvim/lua/config/local_settings.lua
+zsh/.zshrc.local

@@ -17,6 +17,12 @@ nvim:
 ghostty:
 	@mkdir -p ~/.config/
 	@ln -s $(realpath ghostty/) ~/.config/ghostty
+
+.PHONY: zsh
+zsh:
+	@mkdir -p ~/.config/
+	@ln -s $(realpath .zshenv) ~/.zshenv
+	@ln -s $(realpath zsh/) ~/.config/zsh
 	
 .PHONY: clean
 clean:
