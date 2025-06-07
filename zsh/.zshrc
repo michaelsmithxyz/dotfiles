@@ -1,10 +1,9 @@
 typeset -U path PATH
 path=(
-  /opt/homebrew/bin
   $HOME/bin
-  ~/.local/bin
-  # ASDF
   ${ASDF_DATA_DIR:-$HOME/.asdf}/shims
+  ~/.local/bin 
+  /opt/homebrew/bin
   $path
 )
 export PATH
