@@ -56,6 +56,7 @@ return {
       vim.keymap.set('n', '<leader>F', builtin.live_grep, { desc = 'Live grep' })
       vim.keymap.set('n', '<leader>b', builtin.buffers, { desc = 'Buffers' })
       vim.keymap.set('n', '<leader>B', builtin.current_buffer_fuzzy_find, { desc = 'Current buffer' })
+      vim.keymap.set('n', '<leader>j', builtin.jumplist, { desc = 'Jumplist' })
     end,
   },
   {
@@ -216,6 +217,7 @@ return {
   },
   { 'hrsh7th/cmp-nvim-lsp' },
   { 'hrsh7th/cmp-path' },
+  { 'hrsh7th/cmp-buffer' },
   {
     'hrsh7th/nvim-cmp',
     config = function()
@@ -232,6 +234,7 @@ return {
         sources = {
           { name = 'nvim_lsp' },
           { name = 'path' },
+          { name = 'buffer' },
         },
         performance = {
           max_view_entries = 10,

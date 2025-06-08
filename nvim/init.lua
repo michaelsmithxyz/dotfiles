@@ -37,6 +37,8 @@ vim.keymap.set('n', '<leader>n', ':bnext<cr>', { desc = 'Next buffer' })
 vim.keymap.set('n', '<leader>p', ':bprevious<cr>', { desc = 'Previous buffer' })
 vim.keymap.set('n', '<leader>d', ':bdelete<cr>', { desc = 'Close buffer' })
 vim.keymap.set({ 'n', 'v' }, '<leader>/', 'gcc', { remap = true, desc = 'Toggle comment' })
+vim.keymap.set('n', '<leader>]', '<C-I>', { noremap = true, desc = 'Go forward' })
+vim.keymap.set('n', '<leader>[', '<C-O>', { noremap = true, desc = 'Go back' })
 
 require('config.local').load()
 
