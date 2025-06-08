@@ -180,19 +180,24 @@ return {
         signs = { text = diagnostic_signs, virtual_text = true },
       })
 
+      local ensure_installed = {
+        'eslint',
+        'ts_ls',
+        'denols',
+        'lua_ls',
+        'omnisharp',
+        'clangd',
+        'pyright',
+      }
+
+      if vim.fn.executable('go') == 1 then
+        table.insert(ensure_installed, 'gopls')
+      end
+
       require('mason').setup()
       require('mason-lspconfig').setup({
         automatic_enable = true,
-        ensure_installed = {
-          'eslint',
-          'ts_ls',
-          'denols',
-          'lua_ls',
-          'omnisharp',
-          'clangd',
-          'gopls',
-          'pyright',
-        },
+        ensure_installed = ensure_installed,
       })
     end,
   },
