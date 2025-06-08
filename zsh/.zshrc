@@ -24,8 +24,11 @@ fi
 
 ZSH_COMPDUMP="$ZSH_CACHE_DIR/.zcompdump"
 compinit -C -d "$ZSH_COMPDUMP"
-zstyle ':completion:*:*:*:default' menu yes select search
+zstyle ':completion:*:*:*:default' menu yes select
 bindkey '^[[Z' reverse-menu-complete # Shift-Tab to go backwards
+
+
+bindkey -e
 
 
 source <(fzf --zsh)
