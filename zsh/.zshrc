@@ -29,8 +29,6 @@ fi
 
 
 ZSH_COMPDUMP="$ZSH_CACHE_DIR/.zcompdump"
-zstyle ':completion:*:*:*:default' menu yes select
-bindkey '^[[Z' reverse-menu-complete # Shift-Tab to go backwards
 compinit -C -d "$ZSH_COMPDUMP"
 
 
@@ -38,6 +36,7 @@ bindkey -e
 
 
 source "$ZDOTDIR/fzf/fzf.zsh"
+source "$ZDOTDIR/fzf-tab/fzf-tab.plugin.zsh"
 
 
 alias vim="nvim"

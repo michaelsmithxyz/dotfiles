@@ -2,9 +2,12 @@
 all:
 	@echo "Choose a target"
 
-.PHONY: tmux
-tmux:
+.PHONY: submodules
+submodules:
 	@git submodule update --init
+
+.PHONY: tmux
+tmux: submodules
 	@mkdir -p ~/.config/
 	@ln -s $(realpath tmux/) ~/.config/tmux
 
@@ -19,7 +22,7 @@ ghostty:
 	@ln -s $(realpath ghostty/) ~/.config/ghostty
 
 .PHONY: zsh
-zsh:
+zsh: submodules
 	@mkdir -p ~/.config/
 	@ln -s $(realpath .zshenv) ~/.zshenv
 	@ln -s $(realpath zsh/) ~/.config/zsh
