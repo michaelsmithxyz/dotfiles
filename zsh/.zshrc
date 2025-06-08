@@ -1,6 +1,11 @@
 autoload -Uz compinit
 
 
+if [ -d "/opt/homebrew/share/zsh/site-functions/" ]; then
+  fpath+=(/opt/homebrew/share/zsh/site-functions/)
+fi
+
+
 typeset -U path PATH
 path=(
   $HOME/bin
@@ -22,16 +27,17 @@ if [ ! -d "$ZSH_CACHE_DIR" ]; then
   mkdir -p "$ZSH_CACHE_DIR"
 fi
 
+
 ZSH_COMPDUMP="$ZSH_CACHE_DIR/.zcompdump"
-compinit -C -d "$ZSH_COMPDUMP"
 zstyle ':completion:*:*:*:default' menu yes select
 bindkey '^[[Z' reverse-menu-complete # Shift-Tab to go backwards
+compinit -C -d "$ZSH_COMPDUMP"
 
 
 bindkey -e
 
 
-source <(fzf --zsh)
+source "$ZDOTDIR/fzf/fzf.zsh"
 
 
 alias vim="nvim"
