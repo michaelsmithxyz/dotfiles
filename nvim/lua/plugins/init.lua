@@ -41,6 +41,11 @@ return {
             shorten = 3,
           },
         },
+        pickers = {
+          find_files = {
+            find_command = { 'rg', '--files', '--hidden', '-g', '!.git' },
+          },
+        },
       })
 
       pcall(require('telescope').load_extension, 'fzf')
