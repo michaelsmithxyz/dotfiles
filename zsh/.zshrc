@@ -35,7 +35,11 @@ compinit -C -d "$ZSH_COMPDUMP"
 bindkey -e
 
 
-source "$ZDOTDIR/fzf/fzf.zsh"
+FZF_INIT_CACHE="$ZSH_CACHE_DIR/fzf.zsh"
+if [ ! -f "$FZF_INIT_CACHE" ]; then
+  fzf --zsh > "$FZF_INIT_CACHE"
+fi
+source "$FZF_INIT_CACHE"
 source "$ZDOTDIR/fzf-tab/fzf-tab.plugin.zsh"
 
 
@@ -50,7 +54,12 @@ alias ls='ls --color=auto'
 
 if command -v starship &> /dev/null; then
   export STARSHIP_CONFIG="$ZDOTDIR/starship.toml"
-  eval "$(starship init zsh)"
+
+  STARSHIP_INIT_CACHE="$ZSH_CACHE_DIR/starship.zsh"
+  if [ ! -f "$STARSHIP_INIT_CACHE" ]; then
+    starship init zsh > "$STARSHIP_INIT_CACHE"
+  fi
+  source "$STARSHIP_INIT_CACHE"
 fi
 
 
