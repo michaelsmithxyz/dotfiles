@@ -26,6 +26,13 @@ zsh: submodules
 	@mkdir -p ~/.config/
 	@ln -s $(realpath .zshenv) ~/.zshenv
 	@ln -s $(realpath zsh/) ~/.config/zsh
+
+BAT_CONFIG_DIR := $(shell bat --config-dir)
+
+.PHONY: bat
+bat:
+	@ln -s $(realpath bat/) "$(BAT_CONFIG_DIR)"
+	@bat cache --build
 	
 .PHONY: clean
 clean:
