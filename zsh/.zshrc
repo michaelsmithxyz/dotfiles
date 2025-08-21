@@ -28,19 +28,7 @@ if [ ! -d "$ZSH_CACHE_DIR" ]; then
 fi
 
 
-ZSH_COMPDUMP="$ZSH_CACHE_DIR/.zcompdump"
-compinit -C -d "$ZSH_COMPDUMP"
-
-
 bindkey -e
-
-
-FZF_INIT_CACHE="$ZSH_CACHE_DIR/fzf.zsh"
-if [ ! -f "$FZF_INIT_CACHE" ]; then
-  fzf --zsh > "$FZF_INIT_CACHE"
-fi
-source "$FZF_INIT_CACHE"
-source "$ZDOTDIR/fzf-tab/fzf-tab.plugin.zsh"
 
 
 alias vim="nvim"
@@ -68,3 +56,16 @@ if [ -f "${local_zshrc}" ]; then
   source "${local_zshrc}"
 fi
 
+
+# Initialize completions /after/ sourcing `.zshrc.local` so that
+# we can configure `fpath` locally too
+ZSH_COMPDUMP="$ZSH_CACHE_DIR/.zcompdump"
+compinit -C -d "$ZSH_COMPDUMP"
+
+
+FZF_INIT_CACHE="$ZSH_CACHE_DIR/fzf.zsh"
+if [ ! -f "$FZF_INIT_CACHE" ]; then
+  fzf --zsh > "$FZF_INIT_CACHE"
+fi
+source "$FZF_INIT_CACHE"
+source "$ZDOTDIR/fzf-tab/fzf-tab.plugin.zsh"
