@@ -132,19 +132,6 @@ return {
     },
   },
   {
-    'NeogitOrg/neogit',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'sindrets/diffview.nvim',
-    },
-    config = function()
-      local neogit = require('neogit')
-      neogit.setup({
-        graph_style = 'unicode',
-      })
-    end,
-  },
-  {
     'neovim/nvim-lspconfig',
     dependencies = {
       { 'williamboman/mason.nvim', opts = {} },
@@ -341,79 +328,6 @@ return {
   {
     'nvim-treesitter/nvim-treesitter-context',
     opts = {},
-  },
-  {
-    'olimorris/codecompanion.nvim',
-    opts = {},
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-treesitter/nvim-treesitter',
-    },
-    config = function()
-      local local_config = require('config.local').settings.codecompanion
-      if not local_config then
-        return
-      end
-
-      require('codecompanion').setup({
-        display = {
-          chat = {
-            show_settings = true,
-          },
-        },
-        strategies = {
-          chat = {
-            adapter = local_config.defaults.adapter,
-          },
-          inline = {
-            adapter = local_config.defaults.adapter,
-          },
-        },
-        adapters = local_config.adapters,
-      })
-
-      local adapters = {}
-      for key, _ in pairs(local_config.adapters) do
-        table.insert(adapters, key)
-      end
-
-      local t_pickers = require('telescope.pickers')
-      local t_finders = require('telescope.finders')
-      local t_config = require('telescope.config').values
-      local t_actions = require('telescope.actions')
-      local t_actions_state = require('telescope.actions.state')
-
-      local adapter_picker = function(callback)
-        t_pickers
-          .new({}, {
-            prompt_title = 'Select adapter',
-            finder = t_finders.new_table({
-              results = adapters,
-            }),
-            sorter = t_config.generic_sorter({}),
-            attach_mappings = function(prompt_bufno)
-              t_actions.select_default:replace(function()
-                t_actions.close(prompt_bufno)
-                callback(t_actions_state.get_selected_entry()[1])
-              end)
-              return true
-            end,
-          })
-          :find()
-      end
-
-      vim.keymap.set(
-        { 'n', 'v' },
-        '<leader>c',
-        '<cmd>CodeCompanionChat Toggle<cr>',
-        { noremap = true, silent = true, desc = 'Toggle chat' }
-      )
-      vim.keymap.set({ 'n', 'v' }, '<leader>C', function()
-        adapter_picker(function(adapter)
-          vim.cmd(string.format('CodeCompanionChat %s', adapter))
-        end)
-      end, { noremap = true, silent = true, desc = 'Open chat with adapter' })
-    end,
   },
   {
     'stevearc/oil.nvim',
