@@ -69,3 +69,10 @@ if [ ! -f "$FZF_INIT_CACHE" ]; then
 fi
 source "$FZF_INIT_CACHE"
 source "$ZDOTDIR/fzf-tab/fzf-tab.plugin.zsh"
+
+ATUIN_INIT_CACHE="$ZSH_CACHE_DIR/atuin.zsh"
+if [ ! -f "$ATUIN_INIT_CACHE" ]; then
+  atuin init zsh > "$ATUIN_INIT_CACHE"
+fi
+source "$ATUIN_INIT_CACHE"
+

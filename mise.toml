@@ -44,6 +44,12 @@ run = [
 ]
 description = "Setup bat configuration"
 
+
+[tasks.atuin]
+run = [
+  "ln -snf \"$(realpath atuin/)\" ~/.config/atuin"
+]
+
 [tasks.clean]
 run = [
   "unlink ~/.config/tmux",
@@ -51,6 +57,7 @@ run = [
   "unlink ~/.config/ghostty",
   "unlink ~/.zshenv",
   "unlink ~/.config/zsh",
-  "unlink \"$(bat --config-dir)\""
+  "unlink \"$(bat --config-dir)\"",
+  "unlink ~/.config/atuin"
 ]
 description = "Clean up all symlinks"
