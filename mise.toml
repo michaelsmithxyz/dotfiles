@@ -1,0 +1,56 @@
+[tasks.default]
+run = "mise tasks"
+description = "List available tasks"
+
+[tasks.submodules]
+run = "git submodule update --init --recursive"
+description = "Update git submodules"
+
+[tasks.tmux]
+depends = ["submodules"]
+run = [
+  "mkdir -p ~/.config/",
+  "ln -snf \"$(realpath tmux/)\" ~/.config/tmux"
+]
+description = "Setup tmux configuration"
+
+[tasks.nvim]
+run = [
+  "mkdir -p ~/.config/",
+  "ln -snf \"$(realpath nvim/)\" ~/.config/nvim"
+]
+description = "Setup neovim configuration"
+
+[tasks.ghostty]
+run = [
+  "mkdir -p ~/.config/",
+  "ln -snf \"$(realpath ghostty/)\" ~/.config/ghostty"
+]
+description = "Setup ghostty configuration"
+
+[tasks.zsh]
+depends = ["submodules"]
+run = [
+  "mkdir -p ~/.config/",
+  "ln -s \"$(realpath .zshenv)\" ~/.zshenv",
+  "ln -snf \"$(realpath zsh/)\" ~/.config/zsh"
+]
+description = "Setup zsh configuration"
+
+[tasks.bat]
+run = [
+  "ln -snf \"$(realpath bat/)\" \"$(bat --config-dir)\"",
+  "bat cache --build"
+]
+description = "Setup bat configuration"
+
+[tasks.clean]
+run = [
+  "unlink ~/.config/tmux",
+  "unlink ~/.config/nvim", 
+  "unlink ~/.config/ghostty",
+  "unlink ~/.zshenv",
+  "unlink ~/.config/zsh",
+  "unlink \"$(bat --config-dir)\""
+]
+description = "Clean up all symlinks"
