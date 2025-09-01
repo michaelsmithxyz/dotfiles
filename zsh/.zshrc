@@ -9,7 +9,6 @@ fi
 typeset -U path PATH
 path=(
   $HOME/bin
-  ${ASDF_DATA_DIR:-$HOME/.asdf}/shims
   ~/.local/bin 
   /opt/homebrew/bin
   $path
@@ -76,3 +75,8 @@ if [ ! -f "$ATUIN_INIT_CACHE" ]; then
 fi
 source "$ATUIN_INIT_CACHE"
 
+MISE_INIT_CACHE="$ZSH_CACHE_DIR/mise.zsh"
+if [ ! -f "$MISE_INIT_CACHE" ]; then
+  mise activate zsh > "$MISE_INIT_CACHE"
+fi
+source "$MISE_INIT_CACHE"
