@@ -1,5 +1,5 @@
 font-family = "Fira Code Retina"
-theme = "catppuccin-mocha"
+theme = "Catppuccin Mocha"
 window-padding-x = 12
 window-padding-y = 6
 macos-titlebar-proxy-icon = hidden
