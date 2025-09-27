@@ -189,6 +189,7 @@ return {
         'omnisharp',
         'clangd',
         'pyright',
+        'harper_ls',
       }
 
       if vim.fn.executable('go') == 1 then
