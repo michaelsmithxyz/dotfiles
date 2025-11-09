@@ -177,7 +177,6 @@ return {
         diagnostic_signs[vim.diagnostic.severity[type]] = icon
       end
       vim.diagnostic.config({
-        virtual_text = true,
         signs = { text = diagnostic_signs, virtual_text = true },
       })
 
@@ -343,4 +342,19 @@ return {
       require('leap').set_default_mappings()
     end,
   },
+  {
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "VeryLazy",
+    priority = 1000,
+    config = function()
+      require('tiny-inline-diagnostic').setup({
+        break_line = {
+            enabled = true,
+            after = 30,
+        },
+        show_all_diags_on_cursorline = true,
+        use_icons_from_diagnostic = true
+      })
+    end
+  }
 }
