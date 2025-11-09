@@ -35,11 +35,6 @@ alias vim="nvim"
 export EDITOR="nvim"
 
 
-export LS_COLORS="di=1;36:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43"
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-alias ls='ls --color=auto'
-
-
 if command -v starship &> /dev/null; then
   export STARSHIP_CONFIG="$ZDOTDIR/starship.toml"
 
@@ -81,3 +76,13 @@ if [ ! -f "$MISE_INIT_CACHE" ]; then
   mise activate zsh > "$MISE_INIT_CACHE"
 fi
 source "$MISE_INIT_CACHE"
+
+if whence eza &> /dev/null; then
+  alias ls='eza --icons=always -1'
+else
+  export LS_COLORS="di=1;36:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43"
+  zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+  alias ls='ls --color=auto'
+fi
+
+
