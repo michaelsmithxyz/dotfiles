@@ -1,9 +1,13 @@
 autoload -Uz compinit
 
+fpath+=(
+  $ZDOTDIR/completions/
+  $ZDOTDIR/completions/local/
+  $ZDOTDIR/completions/local/*(-/N)
+)
 
 if [ -d "/opt/homebrew/share/zsh/site-functions/" ]; then
   fpath+=(/opt/homebrew/share/zsh/site-functions/)
-  fpath+=($ZDOTDIR/completions/)
 fi
 
 
