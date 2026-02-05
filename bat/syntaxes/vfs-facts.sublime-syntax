@@ -1,0 +1,37 @@
+%YAML 1.2
+---
+name: VFS Facts
+file_extensions:
+  - vfs-facts
+scope: source.vfs-facts
+
+contexts:
+  main:
+    # Section header: ◆ category  [groupBy]
+    - match: '^(◆)\s+(\S+)\s+(\[.*\])$'
+      captures:
+        1: punctuation.definition.section.vfs-facts
+        2: entity.name.section.category.vfs-facts
+        3: comment.block.group-by.vfs-facts
+
+    # Ref line: ┌ ref <value>
+    - match: '^(┌)\s+(ref)\s+(.+)$'
+      captures:
+        1: punctuation.definition.ref.vfs-facts
+        2: keyword.other.ref.vfs-facts
+        3: constant.numeric.reference.vfs-facts
+
+    # Attribute line: ├ key  value
+    - match: '^(├)\s+(\S+)\s{2,}'
+      captures:
+        1: punctuation.definition.attribute.vfs-facts
+        2: variable.other.key.vfs-facts
+      push: value
+
+  value:
+    - match: '.+$'
+      scope: string.unquoted.value.vfs-facts
+      pop: true
+    - match: $
+      pop: true
+
