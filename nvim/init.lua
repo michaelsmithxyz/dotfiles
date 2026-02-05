@@ -9,7 +9,7 @@ vim.opt.signcolumn = 'yes'
 
 vim.opt.mouse = 'a'
 
-vim.api.nvim_set_option('clipboard', 'unnamedplus')
+vim.api.nvim_set_option_value('clipboard', 'unnamedplus', { scope = 'global' })
 
 vim.opt.showmode = false
 
