@@ -55,6 +55,7 @@ return {
       local builtin = require('telescope.builtin')
       vim.keymap.set('n', '<leader>f', builtin.find_files, { desc = 'Find files' })
       vim.keymap.set('n', '<leader>F', builtin.live_grep, { desc = 'Live grep' })
+      vim.keymap.set('n', '<leader>W', builtin.grep_string, { desc = 'Grep current word' })
       vim.keymap.set('n', '<leader>b', builtin.buffers, { desc = 'Buffers' })
       vim.keymap.set('n', '<leader>B', builtin.current_buffer_fuzzy_find, { desc = 'Current buffer' })
       vim.keymap.set('n', '<leader>j', builtin.jumplist, { desc = 'Jumplist' })
