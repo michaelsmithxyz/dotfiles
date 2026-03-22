@@ -252,27 +252,63 @@ return {
       'nvim-lua/lsp-status.nvim',
     },
     lazy = false,
-    opts = {
-      options = {
-        icons_enabled = true,
-        theme = 'auto',
-      },
-      sections = {
-        lualine_a = { 'mode' },
-        lualine_b = { 'branch', 'diff' },
-        lualine_c = {
-          {
-            'filename',
-            newfile_status = true,
-            path = 3,
-            shorting_target = 20,
-          },
+    config = function()
+      local jj_rev = ''
+
+      local function refresh_jj()
+        local stdout = vim.uv.new_pipe()
+        vim.uv.spawn('jj', {
+          args = { 'log', '-r', '@', '--no-graph', '--template', 'change_id.shortest(8)' },
+          stdio = { nil, stdout, nil },
+        }, function(code)
+          if code ~= 0 then
+            jj_rev = ''
+            stdout:close()
+            return
+          end
+          stdout:read_start(function(err, data)
+            if not err and data then
+              jj_rev = vim.trim(data)
+            end
+            stdout:close()
+          end)
+        end)
+      end
+
+      refresh_jj()
+
+      vim.api.nvim_create_autocmd({ 'BufEnter', 'FocusGained', 'DirChanged' }, {
+        callback = refresh_jj,
+      })
+
+      local timer = vim.uv.new_timer()
+      timer:start(1000, 1000, function() refresh_jj() end)
+
+      require('lualine').setup({
+        options = {
+          icons_enabled = true,
+          theme = 'auto',
         },
-        lualine_x = { 'filetype', 'diagnostics' },
-        lualine_y = {},
-        lualine_z = { 'location' },
-      },
-    },
+        sections = {
+          lualine_a = { 'mode' },
+          lualine_b = {
+            { function() return jj_rev end },
+            'diff',
+          },
+          lualine_c = {
+            {
+              'filename',
+              newfile_status = true,
+              path = 3,
+              shorting_target = 20,
+            },
+          },
+          lualine_x = { 'filetype', 'diagnostics' },
+          lualine_y = {},
+          lualine_z = { 'location' },
+        },
+      })
+    end,
   },
   {
     'folke/noice.nvim',
