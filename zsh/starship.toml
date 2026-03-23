@@ -23,5 +23,5 @@ error_symbol = '[➜](bold red)'
 
 [custom.jj]
 when = "jj-starship detect"
-shell = ["jj-starship", "--no-symbol"]
+shell = ["jj-starship", "--no-symbol", "--bookmarks-display-limit", "1"]
 format = "$output "
