@@ -197,7 +197,14 @@ return {
       local function refresh_jj()
         local stdout = vim.uv.new_pipe()
         vim.uv.spawn('jj', {
-          args = { 'log', '-r', '@', '--no-graph', '--template', 'change_id.shortest(8)' },
+          args = { 
+            'log',
+            '--at-op=@',
+            '--ignore-working-copy',
+            '-r', '@',
+            '--no-graph', 
+            '--template', 'change_id.shortest(8)',
+          },
           stdio = { nil, stdout, nil },
         }, function(code)
           if code ~= 0 then
