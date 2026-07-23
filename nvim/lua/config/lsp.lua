@@ -42,7 +42,7 @@ vim.diagnostic.config({
 
 local ensure_installed = {
   'eslint',
-  'ts_ls',
+  'tsgo',
   'denols',
   'lua_ls',
   'omnisharp',
@@ -57,6 +57,9 @@ end
 
 require('mason').setup()
 require('mason-lspconfig').setup({
-  automatic_enable = true,
+  automatic_enable = {
+    -- ts_ls's package may still be installed; tsgo replaces it.
+    exclude = { 'ts_ls' },
+  },
   ensure_installed = ensure_installed,
 })
