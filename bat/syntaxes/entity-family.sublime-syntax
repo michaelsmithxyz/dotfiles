@@ -1,0 +1,42 @@
+%YAML 1.2
+---
+name: Entity Family
+file_extensions:
+  - entity-family
+scope: source.entity-family
+
+contexts:
+  main:
+    # Section header: ◆ EntityType
+    - match: '^(◆)\s+(\S+)$'
+      captures:
+        1: punctuation.definition.section.entity-family
+        2: entity.name.section.entity-type.entity-family
+
+    # Entity line: ┌ entity <uid>  (inactive)?
+    - match: '^(┌)\s+(entity)\s+(\S+)(.*)$'
+      captures:
+        1: punctuation.definition.entity.entity-family
+        2: keyword.other.entity.entity-family
+        3: constant.numeric.uid.entity-family
+        4: comment.inline.inactive.entity-family
+
+    # System header: ├ systemName
+    - match: '^(├)\s+(\S+)$'
+      captures:
+        1: punctuation.definition.system.entity-family
+        2: entity.name.tag.system.entity-family
+
+    # Association line: │   name  value
+    - match: '^(│)\s+(\S+)\s{2,}'
+      captures:
+        1: punctuation.definition.association.entity-family
+        2: variable.other.key.entity-family
+      push: value
+
+  value:
+    - match: '.+$'
+      scope: string.unquoted.value.entity-family
+      pop: true
+    - match: $
+      pop: true
